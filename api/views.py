@@ -9,6 +9,15 @@ from rest_framework import status
 
 class api_views(APIView):
     def get(self, request, pk=None):
+        if pk:
+            try:
+                post_instance = post.objects.get(pk=pk)
+            except:
+                return Response({'error': "data is not found"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                serializer = postSerializer(post_instance)
+                return Response(serializer.data ,status= status.HTTP_200_OK)
+        
         post_queryset = post.objects.all()
         serializer = postSerializer(post_queryset, many=True)
         return Response(serializer.data ,status= status.HTTP_200_OK)
