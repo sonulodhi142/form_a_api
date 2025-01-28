@@ -39,3 +39,11 @@ class api_views(APIView):
             serializer.save()
             return Response(serializer.data ,status= status.HTTP_202_ACCEPTED)
         return Response({'error': "request is not accecpted"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk):
+        try:
+            post_instance = post.objects.get(pk=pk)
+        except:
+            return Response({'error': "data is not found"}, status=status.HTTP_400_BAD_REQUEST)
+        post_instance.delete()
+        return Response({'message': "data deleted succesfully"}, status=status.HTTP_200_OK)
