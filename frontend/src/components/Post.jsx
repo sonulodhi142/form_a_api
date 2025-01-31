@@ -1,8 +1,19 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
-const Post = () => {
+const Post = ({post}) => {
   return (
-    <div>Post</div>
+    <Card style={{ width: '18rem' }}>
+      <Card.Img variant="top" src={`http://127.0.0.1:8000${post.image}`} style={{ width: '10rem' }}/>
+      <Card.Body>
+        <Card.Title>{post.title}</Card.Title>
+        <Card.Text>
+          {post.des}
+        </Card.Text>
+        <Button variant="primary">Go somewhere</Button>
+      </Card.Body>
+    </Card>
   )
 }
 
