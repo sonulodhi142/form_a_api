@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const Forms = () => {
     const [value, setValue] = useState([]);
@@ -12,6 +12,14 @@ const Forms = () => {
     image: null, 
   });
   const navigate = useNavigate()
+  const {id} = useParams();
+
+  useEffect( async () => {
+    await axios.get("http://127.0.0.1:8000")
+    .then((res)=> setValue(res.data))
+    .catch((error)=> error)
+    console.log(value)
+    },[])
 
 
     const handleChange = (e) => {
@@ -40,8 +48,6 @@ const Forms = () => {
           const response = await axios.post("http://127.0.0.1:8000", formDataToSend, {
             headers: { "Content-Type": "multipart/form-data" }
           });
-          console.log(response.data);
-          setValue((prevValue) => [...prevValue, response.data]); // Store the new post
         } catch (err) {
           console.error("Error:", err);
         }
