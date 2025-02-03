@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
+import Button from 'react-bootstrap/esm/Button';
+import Form from 'react-bootstrap/Form';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const Form = () => {
-    const [state, setState] = useState(true);
+const Forms = () => {
     const [value, setValue] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     des: "",
     image: null, 
   });
+  const navigate = useNavigate()
 
 
     const handleChange = (e) => {
@@ -19,47 +23,32 @@ const Form = () => {
         setFormData({ ...formData, image: e.target.files[0] });
       };
     
-      const handleSubmit = (e) => {
-        if(state){
-          e.preventDefault();
-          setValue((prev)=> [...prev, formData])
-          console.log(value)
+      
     
-          const send = new FormData();
-          send.append("title", formData.title) 
-          send.append("des", formData.des) 
-          send.append("image", formData.image) 
-    
-          const response = axios.post("http://127.0.0.1:8000", send, { headers: { "Content-Type": "multipart/form-data" }});
-    
-          console.log(response)
-          setFormData({ title: "", des: "", image: null });
-        }
-      }
-    
-      // const handleSubmit = async (e) => {
-      //   e.preventDefault();
+      const handleSubmit = async (e) => {
+        e.preventDefault();
     
         
-      //   const formDataToSend = new FormData();
-      //   formDataToSend.append("title", formData.title);
-      //   formDataToSend.append("des", formData.des);
-      //   if (formData.image) {
-      //     formDataToSend.append("image", formData.image);
-      //   }
+        const formDataToSend = new FormData();
+        formDataToSend.append("title", formData.title);
+        formDataToSend.append("des", formData.des);
+        if (formData.image) {
+          formDataToSend.append("image", formData.image);
+        }
     
-      //   try {
-      //     const response = await axios.post("http://127.0.0.1:8000", formDataToSend, {
-      //       headers: { "Content-Type": "multipart/form-data" }
-      //     });
-      //     console.log(response.data);
-      //     setValue((prevValue) => [...prevValue, response.data]); // Store the new post
-      //   } catch (err) {
-      //     console.error("Error:", err);
-      //   }
+        try {
+          const response = await axios.post("http://127.0.0.1:8000", formDataToSend, {
+            headers: { "Content-Type": "multipart/form-data" }
+          });
+          console.log(response.data);
+          setValue((prevValue) => [...prevValue, response.data]); // Store the new post
+        } catch (err) {
+          console.error("Error:", err);
+        }
     
-      //   setFormData({ title: "", des: "", image: null });
-      // };
+        setFormData({ title: "", des: "", image: null });
+        navigate('/')
+      };
   return (
     <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-4" controlId="exampleForm.ControlInput1">
@@ -96,4 +85,4 @@ const Form = () => {
   )
 }
 
-export default Form
+export default Forms

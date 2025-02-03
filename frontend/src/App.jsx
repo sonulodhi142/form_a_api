@@ -1,6 +1,6 @@
 import './App.css'
 import Posts from './components/posts'
-import Form from './components/Form'
+import Forms from './components/Form'
 import {BrowserRouter, Routes,Route} from 'react-router-dom'
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
       <h1>Ract app</h1>
       <Routes>
         <Route path='/' element={<Posts/>} />
-        <Route path='create/' element={<Form/>} />
+        <Route path='create/' element={<Forms/>} />
       </Routes>
     </BrowserRouter>
   )

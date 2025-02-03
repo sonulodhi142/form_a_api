@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Post from "./Post";
-import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { Link } from "react-router-dom";
 
 const Posts = () => {
   
@@ -21,6 +21,7 @@ const Posts = () => {
   return (
     <div>
       <h1>Posts</h1>
+      <Link to={'create/'} ><Button variant="primary">Create Post</Button></Link>
       <div style={{ display: "flex", flexWrap: 'wrap' }}>
         {data.map((post, id) => (
           <Post post={post} key={id} />
