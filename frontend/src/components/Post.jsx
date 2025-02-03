@@ -11,6 +11,9 @@ const Post = ({post}) => {
         <Card.Text>
           {post.des}
         </Card.Text>
+        <Card.Text>
+          {post.id}
+        </Card.Text>
         <Button variant="primary">Go somewhere</Button>
       </Card.Body>
     </Card>
