@@ -14,14 +14,17 @@ const Forms = () => {
   const navigate = useNavigate()
   const {id} = useParams();
 
-  useEffect( async () => {
-    await axios.get("http://127.0.0.1:8000")
-    .then((res)=> setValue(res.data))
-    .catch((error)=> error)
-    console.log(value)
-    },[])
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000")
+      .then((response) => setValue(response.data))
+      .catch((e) => console.error("Error fetching data:", e));
+  }, []);
 
-
+  const getPost = (id) =>{
+    const post = value.filter((post)=> (post.id == id))
+    return post
+  }
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
