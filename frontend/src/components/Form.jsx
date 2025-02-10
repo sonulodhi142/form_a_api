@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const Forms = () => {
+    const [state, setState] = useState(false);
     const [value, setValue] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
@@ -16,15 +17,14 @@ const Forms = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000")
-      .then((response) => setValue(response.data))
+      .get(`http://127.0.0.1:8000/${id}/`)
+      .then((response) => setFormData(response.data))
       .catch((e) => console.error("Error fetching data:", e));
-  }, []);
+      setState(true)
+  }, [id]);
+   
 
-  const getPost = (id) =>{
-    const post = value.filter((post)=> (post.id == id))
-    return post
-  }
+  
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -47,13 +47,23 @@ const Forms = () => {
           formDataToSend.append("image", formData.image);
         }
     
+        
         try {
-          const response = await axios.post("http://127.0.0.1:8000", formDataToSend, {
-            headers: { "Content-Type": "multipart/form-data" }
-          });
-        } catch (err) {
-          console.error("Error:", err);
+          let response;
+          if (state) {
+            response = await axios.put(`http://127.0.0.1:8000/${id}/`, formDataToSend, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+          } else {
+            response = await axios.post("http://127.0.0.1:8000", formDataToSend, {
+              headers: { "Content-Type": "multipart/form-data" },
+            });
+          }
         }
+        catch{
+          console.log("error")
+        }
+          
     
         setFormData({ title: "", des: "", image: null });
         navigate('/')
